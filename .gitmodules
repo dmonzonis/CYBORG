@@ -1,0 +1,3 @@
+[submodule "lazarus"]
+	path = lazarus
+	url = git@github.com:tonzo-studios/lazarus.git
