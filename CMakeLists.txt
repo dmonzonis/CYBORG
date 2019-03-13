@@ -44,12 +44,25 @@ add_executable(${EXECUTABLE_NAME}
     ${HEADERS}
 )
 
+# Windows specifics
+if(WIN32)
+    set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
+    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
+    # For now, SFML has to be located in the game's root directory
+    target_include_directories(${EXECUTABLE_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/SFML/include)
+endif()
+
 # Link lazarus library
 add_dependencies(${EXECUTABLE_NAME} lazarus)
-target_link_libraries(${EXECUTABLE_NAME} ${CMAKE_BINARY_DIR}/lazarus/liblazarus.so)
+if(WIN32)
+    target_link_libraries(${EXECUTABLE_NAME} ${CMAKE_BINARY_DIR}/lazarus/lazarus.lib)
+else()
+    target_link_libraries(${EXECUTABLE_NAME} ${CMAKE_BINARY_DIR}/lazarus/liblazarus.so)
+endif()
 target_include_directories(${EXECUTABLE_NAME} PRIVATE ${PROJECT_SOURCE_DIR}/lazarus/src/lazarus)
 
-# Build types (Debug or Release)
+
+# Build type (Debug or Release)
 if(CMAKE_BUILD_TYPE STREQUAL Debug)
     message(STATUS "Build type set to Debug")
     set(CMAKE_VERBOSE_MAKEFILE ON)
