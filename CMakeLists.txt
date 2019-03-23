@@ -26,7 +26,6 @@ configure_file(
 )
 include_directories("${PROJECT_BINARY_DIR}")
 
-# TODO: Add specifics for other operating systems
 if(NOT BIN_PREFIX)
     set(BIN_PREFIX ${CMAKE_INSTALL_PREFIX}/bin)
 endif()
