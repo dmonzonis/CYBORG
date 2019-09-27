@@ -14,7 +14,7 @@ project(CYBORG)
 
 set(EXECUTABLE_NAME "CYBORG")
 
-message("CYBORG Project - By Tonzo Studios")
+message("Project CYBORG")
 message(STATUS "System info: ${CMAKE_SYSTEM_NAME} ${CMAKE_HOST_SYSTEM_PROCESSOR}")
 
 # Set version information in a version.h file
@@ -51,12 +51,12 @@ if(WIN32)
     target_include_directories(${EXECUTABLE_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/SFML/include)
 endif()
 
-# Link lazarus library
+# Link lazarus and SFML libraries
 add_dependencies(${EXECUTABLE_NAME} lazarus)
 if(WIN32)
     target_link_libraries(${EXECUTABLE_NAME} ${CMAKE_BINARY_DIR}/lazarus/lazarus.lib)
 else()
-    target_link_libraries(${EXECUTABLE_NAME} ${CMAKE_BINARY_DIR}/lazarus/liblazarus.so)
+    target_link_libraries(${EXECUTABLE_NAME} sfml-graphics ${CMAKE_BINARY_DIR}/lazarus/liblazarus.so)
 endif()
 target_include_directories(${EXECUTABLE_NAME} PRIVATE ${PROJECT_SOURCE_DIR}/lazarus/src/lazarus)
 
