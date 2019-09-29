@@ -9,8 +9,9 @@
  */
 struct VisibilitySystem : public lz::EventListener<PlayerMovedEvent>
 {
-    VisibilitySystem(const lz::SquareGridMap &map)
+    VisibilitySystem(const lz::SquareGridMap &map, int range)
         : map(map)
+        , range(range)
         , visible(map.get_width() * map.get_height(), false)
         , discovered(map.get_width() * map.get_height(), false)
     {
@@ -25,7 +26,7 @@ struct VisibilitySystem : public lz::EventListener<PlayerMovedEvent>
         const lz::SquareGridMap &map{event.map};
         visible.resize(map.get_width() * map.get_height());
         std::fill(visible.begin(), visible.end(), false);
-        auto visible_from_pos{lz::simple_fov(pos, 5, map)};
+        auto visible_from_pos{lz::simple_fov(pos, range, map)};
         for (auto visible_pos : visible_from_pos)
         {
             int x = visible_pos.x, y = visible_pos.y;
@@ -36,6 +37,7 @@ struct VisibilitySystem : public lz::EventListener<PlayerMovedEvent>
     }
 
     const lz::SquareGridMap &map;
+    int range;
     std::vector<bool> visible;
     std::vector<bool> discovered;
 };

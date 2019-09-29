@@ -77,6 +77,7 @@ int main(int argc, char const *argv[])
             }
         }
     }
+    
     // Player position is always floor
     map.set_walkable(MAP_WIDTH / 2, MAP_HEIGHT / 2, true);
     map.set_transparency(MAP_WIDTH / 2, MAP_HEIGHT / 2, true);
@@ -86,7 +87,7 @@ int main(int argc, char const *argv[])
     window.load_tileset("../lazarus/res/dejavu12x12.png", 12);
 
     // Create systems and subscribe them
-    VisibilitySystem visibility_system(map);
+    VisibilitySystem visibility_system(map, 10);
     InputSystem input_system(player.get_id());
     RenderSystem render_system(window, map, visibility_system);
     // Subscribe the systems as event listeners
