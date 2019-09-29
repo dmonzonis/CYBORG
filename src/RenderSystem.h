@@ -24,7 +24,7 @@ struct RenderSystem : public lz::Updateable
     virtual void update(lz::ECSEngine &engine)
     {
         // Render map
-        const auto& visible = visibility_system.visible;
+        sf::Color tile_color;
         // TODO: Draw camera subview, not the entire window
         for (int y = 0; y < window.get_height(); ++y)
         {
@@ -32,12 +32,17 @@ struct RenderSystem : public lz::Updateable
             {
                 int map_tile = -1;
                 // TODO: Draw walls and explored tiles
-                if (visible[x + y * window.get_width()])
+                int pos_vec = x + y * window.get_width();
+                if (visibility_system.discovered[pos_vec])
                 {
-                    map_tile = FLOOR_IMG;
+                    map_tile = map.is_walkable(x, y) ? FLOOR_IMG : WALL_IMG;
+                    if (visibility_system.visible[pos_vec])
+                        tile_color = sf::Color::White;
+                    else
+                        tile_color = sf::Color(0, 20, 170);
                 }
 
-                window.set_tile({x, y}, map_tile);
+                window.set_tile({x, y}, map_tile, tile_color);
             }
         }
 

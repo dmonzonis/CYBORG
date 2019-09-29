@@ -9,6 +9,11 @@
  */
 struct InputSystem : public lz::EventListener<KeyPressedEvent>
 {
+    InputSystem(lz::Identifier player_id)
+        : player_id(player_id)
+    {
+    }
+
     virtual void receive(lz::ECSEngine& engine, const KeyPressedEvent& event)
     {
         const lz::Event &key_event = event.key_event;
@@ -46,5 +51,5 @@ struct InputSystem : public lz::EventListener<KeyPressedEvent>
         engine.emit(PlayerMovedEvent{player_pos, event.map});
     }
 
-    lz::Identifier player_id = -1;
+    lz::Identifier player_id;
 };

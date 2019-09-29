@@ -9,10 +9,18 @@
  */
 struct VisibilitySystem : public lz::EventListener<PlayerMovedEvent>
 {
+    VisibilitySystem(const lz::SquareGridMap &map)
+        : map(map)
+        , visible(map.get_width() * map.get_height(), false)
+        , discovered(map.get_width() * map.get_height(), false)
+    {
+    }
+
     virtual void receive(lz::ECSEngine& engine, const PlayerMovedEvent& event)
     {
-        // TODO: remember dimensions from map and use those if map has not changed
-        visible.clear();
+        // Reset visibility
+        std::fill(visible.begin(), visible.end(), false);
+
         const lz::Position2D &pos{event.player_pos};
         const lz::SquareGridMap &map{event.map};
         visible.resize(map.get_width() * map.get_height());
@@ -21,10 +29,13 @@ struct VisibilitySystem : public lz::EventListener<PlayerMovedEvent>
         for (auto visible_pos : visible_from_pos)
         {
             int x = visible_pos.x, y = visible_pos.y;
-            visible[x + y * map.get_width()] = true;
+            int pos_vec = x + y * map.get_width();
+            visible[pos_vec] = true;
+            discovered[pos_vec] = true;
         }
     }
 
+    const lz::SquareGridMap &map;
     std::vector<bool> visible;
-    // std::vector<bool> discovered;
+    std::vector<bool> discovered;
 };

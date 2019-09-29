@@ -86,12 +86,13 @@ int main(int argc, char const *argv[])
     window.load_tileset("../lazarus/res/dejavu12x12.png", 12);
 
     // Create systems and subscribe them
-    VisibilitySystem visibility_system;
-    InputSystem input_system;
-    input_system.player_id = player.get_id();
-    RenderSystem render_system{window, map, visibility_system};
+    VisibilitySystem visibility_system(map);
+    InputSystem input_system(player.get_id());
+    RenderSystem render_system(window, map, visibility_system);
+    // Subscribe the systems as event listeners
     engine.subscribe<PlayerMovedEvent>(&visibility_system);
     engine.subscribe<KeyPressedEvent>(&input_system);
+    // Set render system to update every tick
     engine.register_updateable(&render_system);
 
     // Emit a first event so that the FOV is computed on game start
