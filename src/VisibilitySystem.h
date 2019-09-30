@@ -7,7 +7,7 @@
 /**
  * System that handles what is visible for an entity at a given position
  */
-struct VisibilitySystem : public lz::EventListener<PlayerMovedEvent>
+struct VisibilitySystem : public lz::EventListener<EntityMovedEvent>
 {
     VisibilitySystem(const lz::SquareGridMap &map, int range)
         : map(map)
@@ -17,16 +17,23 @@ struct VisibilitySystem : public lz::EventListener<PlayerMovedEvent>
     {
     }
 
-    virtual void receive(lz::ECSEngine& engine, const PlayerMovedEvent& event)
+    virtual void receive(lz::ECSEngine& engine, const EntityMovedEvent& event)
     {
         // Reset visibility
         std::fill(visible.begin(), visible.end(), false);
 
-        const lz::Position2D &pos{event.player_pos};
+        // Get player entity
+        auto player_entities = engine.entities_with_components<lz::Position2D>();
+        if (player_entities.size() > 1)
+            throw std::runtime_error("There cannot be more than one player entity!");
+        else if (player_entities.empty())
+            return;  // No player, so don't process input
+        
+        const lz::Position2D &pos{*player_entities[0]->get<lz::Position2D>()};
         const lz::SquareGridMap &map{event.map};
         visible.resize(map.get_width() * map.get_height());
         std::fill(visible.begin(), visible.end(), false);
-        auto visible_from_pos{lz::simple_fov(pos, range, map)};
+        auto visible_from_pos{lz::fov(pos, range, map, lz::FOV::Simple)};
         for (auto visible_pos : visible_from_pos)
         {
             int x = visible_pos.x, y = visible_pos.y;

@@ -9,8 +9,15 @@ struct KeyPressedEvent
     const lz::SquareGridMap &map;
 };
 
-struct PlayerMovedEvent
+// Issued when an entity wants to move to a different tile
+struct MovementIntentEvent
 {
-    const lz::Position2D &player_pos;
+    lz::Entity &entity;
+    const lz::Position2D &new_pos;
+    const lz::SquareGridMap &map;
+};
+
+struct EntityMovedEvent
+{
     const lz::SquareGridMap &map;
 };

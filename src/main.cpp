@@ -7,6 +7,7 @@
 #include "VisibilitySystem.h"
 #include "InputSystem.h"
 #include "RenderSystem.h"
+#include "MovementSystem.h"
 #include "Components.h"
 
 using namespace std;
@@ -60,6 +61,7 @@ int main(int argc, char const *argv[])
     lz::Entity player;
     player.add_component<lz::Position2D>(MAP_WIDTH / 2, MAP_HEIGHT / 2);
     player.add_component<Renderable>(PLAYER_IMG);
+    player.add_component<Player>();
     engine.add_entity(player);
 
     // Create map with one big room where the player can walk freely
@@ -88,16 +90,18 @@ int main(int argc, char const *argv[])
 
     // Create systems and subscribe them
     VisibilitySystem visibility_system(map, 10);
-    InputSystem input_system(player.get_id());
+    InputSystem input_system;
+    MovementSystem movement_system;
     RenderSystem render_system(window, map, visibility_system);
     // Subscribe the systems as event listeners
-    engine.subscribe<PlayerMovedEvent>(&visibility_system);
+    engine.subscribe<EntityMovedEvent>(&visibility_system);
     engine.subscribe<KeyPressedEvent>(&input_system);
+    engine.subscribe<MovementIntentEvent>(&movement_system);
     // Set render system to update every tick
     engine.register_updateable(&render_system);
 
     // Emit a first event so that the FOV is computed on game start
-    engine.emit<PlayerMovedEvent>({*player.get<lz::Position2D>(), map});
+    engine.emit<EntityMovedEvent>({map});
 
     // TODO: Store current map in engine, or somewhere more accessible for events
     game_loop(engine, window, map);

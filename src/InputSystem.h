@@ -2,6 +2,7 @@
 
 #include <lazarus/ECS.h>
 #include <lazarus/SquareGridMap.h>
+#include "Components.h"
 #include "Events.h"
 
 /**
@@ -9,22 +10,20 @@
  */
 struct InputSystem : public lz::EventListener<KeyPressedEvent>
 {
-    InputSystem(lz::Identifier player_id)
-        : player_id(player_id)
-    {
-    }
+    InputSystem() = default;
 
     virtual void receive(lz::ECSEngine& engine, const KeyPressedEvent& event)
     {
         const lz::Event &key_event = event.key_event;
-        // Get player position
-        if (player_id == -1)
-            return;
-        lz::Entity *player = engine.get_entity(player_id);
-        if (!player)
-            return;
-        lz::Position2D &player_pos = *player->get<lz::Position2D>();
-        lz::Position2D new_pos = player_pos;
+        // Get player entity
+        auto player_entities = engine.entities_with_components<Player>();
+        if (player_entities.size() != 1)
+            throw std::runtime_error("There cannot be more than one player entity!");
+        else if (player_entities.empty())
+            return;  // No player, so don't process input
+
+        lz::Entity &player = *player_entities[0];
+        lz::Position2D new_pos = *player.get<lz::Position2D>();
 
         // Handle movement keys
         switch (key_event.key.code)
@@ -43,13 +42,9 @@ struct InputSystem : public lz::EventListener<KeyPressedEvent>
             break;
         }
 
-        // Move player to the new position
-        // TODO: Check out of bounds, obstacles, etc
-        player_pos = new_pos;
-        
-        // Emit player movement event to recalculate FOV
-        engine.emit(PlayerMovedEvent{player_pos, event.map});
+        // Emit intent of the player to move
+        // A different system will check if the player does move, if it hits an enemy,
+        // a wall, etc
+        engine.emit(MovementIntentEvent{player, new_pos, event.map});
     }
-
-    lz::Identifier player_id;
 };
