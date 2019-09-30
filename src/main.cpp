@@ -13,12 +13,12 @@
 using namespace std;
 
 // Map dimensions
-constexpr int MAP_WIDTH = 70;
-constexpr int MAP_HEIGHT = 55;
+constexpr int MAP_WIDTH = 60;
+constexpr int MAP_HEIGHT = 40;
 
 // Tile IDs
 // TODO: Remove this
-constexpr int PLAYER_IMG = 32;
+constexpr int PLAYER_IMG = 0;
 
 // TODO: Move abstract game loop logic to lazarus
 void game_loop(lz::ECSEngine &engine, lz::Window &window, lz::SquareGridMap &map)
@@ -86,7 +86,7 @@ int main(int argc, char const *argv[])
 
     // Create display window and load tileset
     lz::Window window(MAP_WIDTH, MAP_HEIGHT);
-    window.load_tileset("../lazarus/res/dejavu12x12.png", 12);
+    window.load_tileset("../res/test_tileset.png", 24);
 
     // Create systems and subscribe them
     VisibilitySystem visibility_system(map, 10);

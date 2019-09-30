@@ -7,8 +7,8 @@
 #include "VisibilitySystem.h"
 
 // TODO: Remove this
-constexpr int FLOOR_IMG = 14;
-constexpr int WALL_IMG = 3;
+constexpr int FLOOR_IMG = 1;
+constexpr int WALL_IMG = 2;
 
 struct RenderSystem : public lz::Updateable
 {
@@ -39,7 +39,7 @@ struct RenderSystem : public lz::Updateable
                     if (visibility_system.visible[pos_vec])
                         tile_color = sf::Color::White;
                     else
-                        tile_color = sf::Color(0, 20, 170);
+                        tile_color = sf::Color(20, 40, 190);
                 }
 
                 window.set_tile({x, y}, map_tile, tile_color);
