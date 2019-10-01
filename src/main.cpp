@@ -14,8 +14,8 @@
 using namespace std;
 
 // Map dimensions
-constexpr int MAP_WIDTH = 30;
-constexpr int MAP_HEIGHT = 20;
+constexpr int MAP_WIDTH = 70;
+constexpr int MAP_HEIGHT = 70;
 
 // Tile IDs
 // TODO: Remove this
@@ -68,7 +68,7 @@ int main(int argc, char const *argv[])
 
     // Add some NPCs
     lz::Entity npc;
-    npc.add_component<lz::Position2D>(5, 5);
+    npc.add_component<lz::Position2D>(MAP_WIDTH / 2 - 15, MAP_HEIGHT / 2 - 15);
     npc.add_component<Renderable>(MONSTER_IMG);
     npc.add_component<AI>(AIBehaviour::Follow);
     engine.add_entity(npc);
@@ -94,7 +94,7 @@ int main(int argc, char const *argv[])
     map.set_transparency(MAP_WIDTH / 2, MAP_HEIGHT / 2, true);
 
     // Create display window and load tileset
-    lz::Window window(MAP_WIDTH, MAP_HEIGHT);
+    lz::Window window(20, 20);
     window.load_tileset("../res/test_tileset_48x48.png", 48);
 
     // Create systems and subscribe them
