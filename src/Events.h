@@ -21,3 +21,8 @@ struct EntityMovedEvent
 {
     const lz::SquareGridMap &map;
 };
+
+struct RefreshAI
+{
+    lz::Entity *player;
+};

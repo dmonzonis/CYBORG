@@ -46,13 +46,15 @@ struct RenderSystem : public lz::Updateable
             }
         }
 
-        // Render entities
+        // Render visible entities
         engine.apply_to_each<lz::Position2D, Renderable>(
             [&](lz::Entity *entity, lz::Position2D *pos, Renderable *rend)
             {
                 // TODO: Use relative position
                 // For now, we are assuming position on screen = position on map
-                window.set_tile(*pos, rend->tile_id);
+                int pos_vec = pos->x + pos->y * map.get_width();
+                if (visibility_system.visible[pos_vec])
+                    window.set_tile(*pos, rend->tile_id);
             }
         );
     }

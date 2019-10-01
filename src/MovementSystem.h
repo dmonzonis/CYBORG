@@ -25,6 +25,10 @@ struct MovementSystem : public lz::EventListener<MovementIntentEvent>
             // recalculated lots of times for nothing. Set a flag to recalculate
             // FOV before drawing the map
             engine.emit<EntityMovedEvent>({map});
+
+            // If the player moved, it's the NPCs' turn, so execute AI
+            if (entity.has<Player>())
+                engine.emit<RefreshAI>({&entity});
         }
     }
 };

@@ -8,17 +8,19 @@
 #include "InputSystem.h"
 #include "RenderSystem.h"
 #include "MovementSystem.h"
+#include "AISystem.h"
 #include "Components.h"
 
 using namespace std;
 
 // Map dimensions
-constexpr int MAP_WIDTH = 60;
-constexpr int MAP_HEIGHT = 40;
+constexpr int MAP_WIDTH = 30;
+constexpr int MAP_HEIGHT = 20;
 
 // Tile IDs
 // TODO: Remove this
 constexpr int PLAYER_IMG = 0;
+constexpr int MONSTER_IMG = 3;
 
 // TODO: Move abstract game loop logic to lazarus
 void game_loop(lz::ECSEngine &engine, lz::Window &window, lz::SquareGridMap &map)
@@ -64,6 +66,13 @@ int main(int argc, char const *argv[])
     player.add_component<Player>();
     engine.add_entity(player);
 
+    // Add some NPCs
+    lz::Entity npc;
+    npc.add_component<lz::Position2D>(5, 5);
+    npc.add_component<Renderable>(MONSTER_IMG);
+    npc.add_component<AI>(AIBehaviour::Follow);
+    engine.add_entity(npc);
+
     // Create map with one big room where the player can walk freely
     lz::SquareGridMap map(MAP_WIDTH, MAP_HEIGHT);
     // Randomize walls. Each tile has a 20% prob of being wall
@@ -86,17 +95,19 @@ int main(int argc, char const *argv[])
 
     // Create display window and load tileset
     lz::Window window(MAP_WIDTH, MAP_HEIGHT);
-    window.load_tileset("../res/test_tileset.png", 24);
+    window.load_tileset("../res/test_tileset_48x48.png", 48);
 
     // Create systems and subscribe them
     VisibilitySystem visibility_system(map, 10);
     InputSystem input_system;
     MovementSystem movement_system;
     RenderSystem render_system(window, map, visibility_system);
+    AISystem ai_system(map);
     // Subscribe the systems as event listeners
     engine.subscribe<EntityMovedEvent>(&visibility_system);
     engine.subscribe<KeyPressedEvent>(&input_system);
     engine.subscribe<MovementIntentEvent>(&movement_system);
+    engine.subscribe<RefreshAI>(&ai_system);
     // Set render system to update every tick
     engine.register_updateable(&render_system);
 

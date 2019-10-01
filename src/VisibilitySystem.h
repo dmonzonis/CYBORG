@@ -3,6 +3,7 @@
 #include <lazarus/ECS.h>
 #include <lazarus/FOV.h>
 #include "Events.h"
+#include "Components.h"
 
 /**
  * System that handles what is visible for an entity at a given position
@@ -23,7 +24,7 @@ struct VisibilitySystem : public lz::EventListener<EntityMovedEvent>
         std::fill(visible.begin(), visible.end(), false);
 
         // Get player entity
-        auto player_entities = engine.entities_with_components<lz::Position2D>();
+        auto player_entities = engine.entities_with_components<Player>();
         if (player_entities.size() > 1)
             throw std::runtime_error("There cannot be more than one player entity!");
         else if (player_entities.empty())
