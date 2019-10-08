@@ -40,6 +40,9 @@ struct InputSystem : public lz::EventListener<KeyPressedEvent>
         case sf::Keyboard::Down:
             ++new_pos.y;
             break;
+        default:
+            // Unhandled key, do not take an action
+            return;
         }
 
         // Emit intent of the player to move

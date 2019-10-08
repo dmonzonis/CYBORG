@@ -37,7 +37,7 @@ struct AISystem : public lz::EventListener<RefreshAI>
                                                                                 pos,
                                                                                 player_pos);
                 astar_search.execute();
-                if (astar_search.getState() != lz::SearchState::SUCCESS)
+                if (astar_search.get_state() != lz::SearchState::SUCCESS)
                     // No path to player, do nothing
                     break;
                 auto path = astar_search.getPath();
