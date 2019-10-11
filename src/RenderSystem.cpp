@@ -1,14 +1,15 @@
 #include "RenderSystem.h"
-
-RenderSystem::RenderSystem(lz::Window &window)
-    : window(window),
-      range_x(window.get_width() / 2),
-      range_y(window.get_height() / 2)
-{
-}
+#include "MainWindow.h"
 
 void RenderSystem::update(lz::ECSEngine &engine)
 {
+    // Get main camera
+    lz::Window &window = MainWindow::get_window();
+    if (!window.is_initialized())
+        return;
+    int range_x = window.get_width() / 2;
+    int range_y = window.get_height() / 2;
+
     // Acts like a camera or view centered on the player
     // TODO: Let player pan, zoom, etc the camera/view
     lz::Entity *player = engine.entities_with_components<Player>().front();

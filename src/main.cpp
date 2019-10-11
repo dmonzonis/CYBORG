@@ -95,7 +95,7 @@ int main(int argc, char const *argv[])
     VisibilitySystem visibility_system;
     InputSystem input_system;
     MovementSystem movement_system;
-    RenderSystem render_system(window);
+    RenderSystem render_system;
     AISystem ai_system;
     // Subscribe the systems as event listeners
     engine.subscribe<EntityMovedEvent>(&visibility_system);

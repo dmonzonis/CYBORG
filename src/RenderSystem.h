@@ -12,11 +12,7 @@ constexpr int WALL_IMG = 2;
 
 struct RenderSystem : public lz::Updateable
 {
-    RenderSystem(lz::Window &window);
-
     virtual void update(lz::ECSEngine &engine);
-
-    lz::Window &window;
 
     // Tiles from the center that the camera will render in each direction
     unsigned range_x, range_y;
