@@ -1,6 +1,7 @@
 #pragma once
 
 #include <lazarus/ECS.h>
+#include "Dungeon.h"
 #include "Events.h"
 
 /**
@@ -15,7 +16,7 @@ struct MovementSystem : public lz::EventListener<MovementIntentEvent>
         // Check if the entity can move to the new position
         auto entity = event.entity;
         auto new_pos = event.new_pos;
-        auto map = event.map;
+        auto map = Dungeon::instance().get_level();
         if (map.is_walkable(event.new_pos))
         {
             // OK, set entity at new position
@@ -24,7 +25,7 @@ struct MovementSystem : public lz::EventListener<MovementIntentEvent>
             // TODO: Don't do this every time an entity moves, or FOV will be
             // recalculated lots of times for nothing. Set a flag to recalculate
             // FOV before drawing the map
-            engine.emit<EntityMovedEvent>({map});
+            engine.emit<EntityMovedEvent>({});
 
             // If the player moved, it's the NPCs' turn, so execute AI
             if (entity.has<Player>())

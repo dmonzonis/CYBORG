@@ -4,16 +4,12 @@
 #include <lazarus/SquareGridMap.h>
 #include <lazarus/AStarSearch.h>
 #include "Components.h"
+#include "Dungeon.h"
 #include "Events.h"
 #include <algorithm>
 
 struct AISystem : public lz::EventListener<RefreshAI>
 {
-    AISystem(lz::SquareGridMap &map)
-        : map(map)
-    {
-    }
-
     virtual void receive(lz::ECSEngine &engine, const RefreshAI &event)
     {
         auto npcs = engine.entities_with_components<AI>();
@@ -32,6 +28,9 @@ struct AISystem : public lz::EventListener<RefreshAI>
                     break;
                 lz::Position2D pos = *npc->get<lz::Position2D>();
                 lz::Position2D player_pos = *player->get<lz::Position2D>();
+
+                // Get current map
+                lz::SquareGridMap &map = Dungeon::instance().get_level();
 
                 lz::AStarSearch<lz::Position2D, lz::SquareGridMap> astar_search(map,
                                                                                 pos,
@@ -53,7 +52,7 @@ struct AISystem : public lz::EventListener<RefreshAI>
                 else
                 {
                     // Move towards player
-                    engine.emit<MovementIntentEvent>({*npc, path.front(), map});
+                    engine.emit<MovementIntentEvent>({*npc, path.front()});
                 }
             }
             break;
@@ -64,6 +63,4 @@ struct AISystem : public lz::EventListener<RefreshAI>
             }
         }
     }
-
-    const lz::SquareGridMap &map;
 };

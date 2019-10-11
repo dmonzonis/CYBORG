@@ -48,6 +48,6 @@ struct InputSystem : public lz::EventListener<KeyPressedEvent>
         // Emit intent of the player to move
         // A different system will check if the player does move, if it hits an enemy,
         // a wall, etc
-        engine.emit(MovementIntentEvent{player, new_pos, event.map});
+        engine.emit(MovementIntentEvent{player, new_pos});
     }
 };

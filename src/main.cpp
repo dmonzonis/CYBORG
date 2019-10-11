@@ -10,6 +10,7 @@
 #include "MovementSystem.h"
 #include "AISystem.h"
 #include "Components.h"
+#include "Dungeon.h"
 
 using namespace std;
 
@@ -23,7 +24,7 @@ constexpr int PLAYER_IMG = 0;
 constexpr int MONSTER_IMG = 3;
 
 // TODO: Move abstract game loop logic to lazarus
-void game_loop(lz::ECSEngine &engine, lz::Window &window, lz::SquareGridMap &map)
+void game_loop(lz::ECSEngine &engine, lz::Window &window)
 {
     while (window.is_open())
     {
@@ -39,7 +40,7 @@ void game_loop(lz::ECSEngine &engine, lz::Window &window, lz::SquareGridMap &map
             case lz::Event::KeyPressed:
                 // TODO: Add key press to a queue and handle them all later to be
                 // able to parse key combinations
-                engine.emit(KeyPressedEvent{event, map});
+                engine.emit(KeyPressedEvent{event});
                 break;
             }
         }
@@ -74,20 +75,10 @@ int main(int argc, char const *argv[])
     engine.add_entity(npc);
 
     // Create map with one big room where the player can walk freely
-    lz::SquareGridMap map(MAP_WIDTH, MAP_HEIGHT);
-    // Randomize walls. Each tile has a 20% prob of being wall
-    for (int y = 0; y < MAP_HEIGHT; ++y)
-    {
-        for (int x = 0; x < MAP_WIDTH; ++x)
-        {
-            bool wall = lz::Random::one_in(5);
-            if (!wall)
-            {
-                map.set_walkable(x, y, true);
-                map.set_transparency(x, y, true);
-            }
-        }
-    }
+    Dungeon &dungeon = Dungeon::instance();
+    int level = dungeon.generate_new_level(MAP_WIDTH, MAP_HEIGHT);
+    dungeon.switch_level(level);
+    lz::SquareGridMap &map = dungeon.get_level();
     
     // Player position is always floor
     map.set_walkable(MAP_WIDTH / 2, MAP_HEIGHT / 2, true);
@@ -95,14 +86,14 @@ int main(int argc, char const *argv[])
 
     // Create display window and load tileset
     lz::Window window(20, 20);
-    window.load_tileset("../res/test_tileset_48x48.png", 48);
+    window.load_tileset("../res/test_tileset_48x48.png");
 
     // Create systems and subscribe them
-    VisibilitySystem visibility_system(map, 10);
+    VisibilitySystem visibility_system(10);
     InputSystem input_system;
     MovementSystem movement_system;
-    RenderSystem render_system(window, map, visibility_system);
-    AISystem ai_system(map);
+    RenderSystem render_system(window);
+    AISystem ai_system;
     // Subscribe the systems as event listeners
     engine.subscribe<EntityMovedEvent>(&visibility_system);
     engine.subscribe<KeyPressedEvent>(&input_system);
@@ -112,10 +103,10 @@ int main(int argc, char const *argv[])
     engine.register_updateable(&render_system);
 
     // Emit a first event so that the FOV is computed on game start
-    engine.emit<EntityMovedEvent>({map});
+    engine.emit<EntityMovedEvent>({});
 
     // TODO: Store current map in engine, or somewhere more accessible for events
-    game_loop(engine, window, map);
+    game_loop(engine, window);
 
     return 0;
 }
