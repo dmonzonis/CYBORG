@@ -1,7 +1,7 @@
 #pragma once
 
 #include <lazarus/ECS.h>
-#include <lazarus/SquareGridMap.h>
+#include <lazarus/Graphics/Window.h>
 
 struct KeyPressedEvent
 {
