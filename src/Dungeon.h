@@ -9,10 +9,10 @@ class Dungeon
 {
 public:
     // Delete other constructors/copy operators
-    Dungeon(const Dungeon &) = delete;
-    Dungeon &operator=(const Dungeon &) = delete;
-    Dungeon(Dungeon &&) = delete;
-    Dungeon &operator=(Dungeon &&) = delete;
+    Dungeon(const Dungeon&) = delete;
+    Dungeon &operator=(const Dungeon&) = delete;
+    Dungeon(Dungeon&&) = delete;
+    Dungeon &operator=(Dungeon&&) = delete;
 
     /**
      * Get the singleton's instance.
@@ -52,7 +52,7 @@ public:
     void set_discovered(int x, int y, bool state);
 
 private:
-    Dungeon(); // Disable instantiation outside of this class
+    Dungeon();  // Disable instantiation outside of this class
 
 private:
     std::vector<lz::SquareGridMap> levels;

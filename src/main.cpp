@@ -11,6 +11,7 @@
 #include "AISystem.h"
 #include "Components.h"
 #include "Dungeon.h"
+#include "MainWindow.h"
 
 using namespace std;
 
@@ -84,9 +85,11 @@ int main(int argc, char const *argv[])
     map.set_walkable(MAP_WIDTH / 2, MAP_HEIGHT / 2, true);
     map.set_transparency(MAP_WIDTH / 2, MAP_HEIGHT / 2, true);
 
-    // Create display window and load tileset
-    lz::Window window(20, 20);
-    window.load_tileset("../res/test_tileset_48x48.png");
+    // Load tileset and initialize the main window
+    lz::Tileset tileset;
+    tileset.load("../res/test_tileset_48x48.png");
+    lz::Window &window = MainWindow::get_window();
+    window.init(tileset, 20, 20, "CYBORG - A Lazarus game");
 
     // Create systems and subscribe them
     VisibilitySystem visibility_system;
