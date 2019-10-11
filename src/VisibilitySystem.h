@@ -11,10 +11,5 @@
  */
 struct VisibilitySystem : public lz::EventListener<EntityMovedEvent>
 {
-    VisibilitySystem(int range);
-
     virtual void receive(lz::ECSEngine& engine, const EntityMovedEvent& event);
-    
-
-    int range;
 };

@@ -1,10 +1,5 @@
 #include "VisibilitySystem.h"
 
-VisibilitySystem::VisibilitySystem(int range)
-    : range(range)
-{
-}
-
 void VisibilitySystem::receive(lz::ECSEngine &engine,
                                const EntityMovedEvent &event)
 {
@@ -21,6 +16,9 @@ void VisibilitySystem::receive(lz::ECSEngine &engine,
         throw std::runtime_error("There cannot be more than one player entity!");
     else if (player_entities.empty())
         return; // No player, so don't process input
+
+    // Get FOV range from player component
+    int range = player_entities[0]->get<Player>()->fov_range;
 
     const lz::Position2D &pos{*player_entities[0]->get<lz::Position2D>()};
     auto visible_from_pos{lz::fov(pos, range, map, lz::FOV::Simple)};

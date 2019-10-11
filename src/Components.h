@@ -1,8 +1,12 @@
 #pragma once
 
-// Empty component to identify the player
+// Component that identifies the player
 struct Player
 {
+    Player(int fov_range) : fov_range(fov_range)
+    {
+    }
+    int fov_range;
 };
 
 // Entities that have a tile associated and will be rendered by the render system

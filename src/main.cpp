@@ -64,7 +64,7 @@ int main(int argc, char const *argv[])
     lz::Entity player;
     player.add_component<lz::Position2D>(MAP_WIDTH / 2, MAP_HEIGHT / 2);
     player.add_component<Renderable>(PLAYER_IMG);
-    player.add_component<Player>();
+    player.add_component<Player>(10);
     engine.add_entity(player);
 
     // Add some NPCs
@@ -89,7 +89,7 @@ int main(int argc, char const *argv[])
     window.load_tileset("../res/test_tileset_48x48.png");
 
     // Create systems and subscribe them
-    VisibilitySystem visibility_system(10);
+    VisibilitySystem visibility_system;
     InputSystem input_system;
     MovementSystem movement_system;
     RenderSystem render_system(window);
