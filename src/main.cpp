@@ -91,19 +91,13 @@ int main(int argc, char const *argv[])
     lz::Window &window = MainWindow::get_window();
     window.init(tileset, 20, 20, "CYBORG - A Lazarus game");
 
-    // Create systems and subscribe them
-    VisibilitySystem visibility_system;
-    InputSystem input_system;
-    MovementSystem movement_system;
-    RenderSystem render_system;
-    AISystem ai_system;
-    // Subscribe the systems as event listeners
-    engine.subscribe<EntityMovedEvent>(&visibility_system);
-    engine.subscribe<KeyPressedEvent>(&input_system);
-    engine.subscribe<MovementIntentEvent>(&movement_system);
-    engine.subscribe<RefreshAI>(&ai_system);
+    // Create and subscribe the systems as event listeners
+    engine.add_system<VisibilitySystem, EntityMovedEvent>();
+    engine.add_system<InputSystem, KeyPressedEvent>();
+    engine.add_system<MovementSystem, MovementIntentEvent>();
+    engine.add_system<AISystem, RefreshAI>();
     // Set render system to update every tick
-    engine.register_updateable(&render_system);
+    engine.add_updateable<RenderSystem>();
 
     // Emit a first event so that the FOV is computed on game start
     engine.emit<EntityMovedEvent>({});
