@@ -1,9 +1,8 @@
+#include "Game.h"
+
 #include "version.h"
 
-#include <lazarus/common.h>
 #include <lazarus/Graphics.h>
-#include <lazarus/FOV.h>
-#include <lazarus/Random.h>
 #include "VisibilitySystem.h"
 #include "InputSystem.h"
 #include "RenderSystem.h"
@@ -12,17 +11,6 @@
 #include "Components.h"
 #include "Dungeon.h"
 #include "MainWindow.h"
-
-using namespace std;
-
-// Map dimensions
-constexpr int MAP_WIDTH = 70;
-constexpr int MAP_HEIGHT = 70;
-
-// Tile IDs
-// TODO: Remove this
-constexpr int PLAYER_IMG = 0;
-constexpr int MONSTER_IMG = 3;
 
 // TODO: Move abstract game loop logic to lazarus
 void game_loop(lz::ECSEngine &engine)
