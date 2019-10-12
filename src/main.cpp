@@ -25,8 +25,9 @@ constexpr int PLAYER_IMG = 0;
 constexpr int MONSTER_IMG = 3;
 
 // TODO: Move abstract game loop logic to lazarus
-void game_loop(lz::ECSEngine &engine, lz::Window &window)
+void game_loop(lz::ECSEngine &engine)
 {
+    lz::Window &window = MainWindow::get_window();
     while (window.is_open())
     {
         // Process events
@@ -88,8 +89,7 @@ int main(int argc, char const *argv[])
     // Load tileset and initialize the main window
     lz::Tileset tileset;
     tileset.load("../res/test_tileset_48x48.png");
-    lz::Window &window = MainWindow::get_window();
-    window.init(tileset, 20, 20, "CYBORG - A Lazarus game");
+    MainWindow::get_window().init(tileset, 20, 20, "CYBORG - A Lazarus game");
 
     // Create and subscribe the systems as event listeners
     engine.add_system<VisibilitySystem, EntityMovedEvent>();
@@ -103,7 +103,7 @@ int main(int argc, char const *argv[])
     engine.emit<EntityMovedEvent>({});
 
     // TODO: Store current map in engine, or somewhere more accessible for events
-    game_loop(engine, window);
+    game_loop(engine);
 
     return 0;
 }
