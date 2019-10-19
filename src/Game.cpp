@@ -90,7 +90,6 @@ int main(int argc, char const *argv[])
     // Emit a first event so that the FOV is computed on game start
     engine.emit<EntityMovedEvent>({});
 
-    // TODO: Store current map in engine, or somewhere more accessible for events
     game_loop(engine);
 
     return 0;
