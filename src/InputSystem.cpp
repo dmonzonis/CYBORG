@@ -24,6 +24,13 @@ void InputSystem::receive(lz::ECSEngine &engine,
     case sf::Event::MouseWheelScrolled:
         handle_mousewheel_event(player, inp_event);
         break;
+    case sf::Event::MouseButtonPressed:
+    case sf::Event::MouseButtonReleased:
+        handle_mouse_click_event(player, inp_event);
+        break;
+    case sf::Event::MouseMoved:
+        handle_mouse_movement_event(player, inp_event);
+        break;
     }
 }
 
@@ -71,4 +78,49 @@ void InputSystem::handle_mousewheel_event(lz::Entity &player,
         player_component->camera_zoom = 5.;
     else if (player_component->camera_zoom < 0.5)
         player_component->camera_zoom = 0.5;
+}
+
+void InputSystem::handle_mouse_click_event(lz::Entity &player,
+                                           lz::Event &event)
+{
+    Player *player_component = player.get<Player>();
+    if (!player_component)
+        return;
+
+    sf::Event::MouseButtonEvent &mouse_button = event.mouseButton;
+    if (event.type == sf::Event::MouseButtonPressed)
+    {
+        // Middle mouse button click: start panning
+        if (mouse_button.button == sf::Mouse::Button::Middle)
+        {
+            panning = true;
+            old_mouse_pos = sf::Vector2i(mouse_button.x, mouse_button.y);
+        }
+    }
+    else if (event.type == sf::Event::MouseButtonReleased)
+    {
+        // Middle mouse button release: stop panning
+        if (mouse_button.button == sf::Mouse::Button::Middle)
+            panning = false;
+    }
+}
+
+void InputSystem::handle_mouse_movement_event(lz::Entity &player,
+                                              lz::Event &event)
+{
+    Player *player_component = player.get<Player>();
+    if (!player_component)
+        return;
+
+    sf::Event::MouseMoveEvent &mouse= event.mouseMove;
+    if (panning)
+    {
+        // Pan the camera by the mouse movement amount
+        const sf::Vector2i current_mouse_pos(mouse.x, mouse.y);
+        const sf::Vector2i delta = current_mouse_pos - old_mouse_pos;
+        int delta_x = delta.x, delta_y = delta.y;
+        player_component->camera_offset_x -= delta_x;
+        player_component->camera_offset_y -= delta_y;
+        old_mouse_pos = current_mouse_pos;
+    }
 }

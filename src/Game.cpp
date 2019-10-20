@@ -27,8 +27,8 @@ void game_loop(lz::ECSEngine &engine)
             case lz::Event::Closed:
                 window.close();
                 break;
-            case lz::Event::KeyPressed:
-            case lz::Event::MouseWheelScrolled:
+            // The rest of the events are handled by the InputSystem
+            default:
                 engine.emit(InputEvent{event});
                 break;
             }
