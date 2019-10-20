@@ -28,9 +28,8 @@ void game_loop(lz::ECSEngine &engine)
                 window.close();
                 break;
             case lz::Event::KeyPressed:
-                // TODO: Add key press to a queue and handle them all later to be
-                // able to parse key combinations
-                engine.emit(KeyPressedEvent{event});
+            case lz::Event::MouseWheelScrolled:
+                engine.emit(InputEvent{event});
                 break;
             }
         }
@@ -81,7 +80,7 @@ int main(int argc, char const *argv[])
 
     // Create and subscribe the systems as event listeners
     engine.add_system<VisibilitySystem, EntityMovedEvent>();
-    engine.add_system<InputSystem, KeyPressedEvent>();
+    engine.add_system<InputSystem, InputEvent>();
     engine.add_system<MovementSystem, MovementIntentEvent>();
     engine.add_system<AISystem, RefreshAI>();
     engine.add_system<RenderSystem, ResetCameraEvent>();

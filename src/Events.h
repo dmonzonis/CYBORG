@@ -3,9 +3,9 @@
 #include <lazarus/ECS.h>
 #include <lazarus/Graphics/Window.h>
 
-struct KeyPressedEvent
+struct InputEvent
 {
-    const lz::Event &key_event;
+    const lz::Event &event;
 };
 
 // Issued when an entity wants to move to a different tile
