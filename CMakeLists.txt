@@ -57,7 +57,7 @@ add_dependencies(${EXECUTABLE_NAME} lazarus)
 if(WIN32)
     target_link_libraries(${EXECUTABLE_NAME} ${CMAKE_BINARY_DIR}/lazarus/lazarus.lib)
 else()
-    target_link_libraries(${EXECUTABLE_NAME} sfml-graphics ${CMAKE_BINARY_DIR}/lazarus/liblazarus.so)
+    target_link_libraries(${EXECUTABLE_NAME} sfml-graphics sfml-window ${CMAKE_BINARY_DIR}/lazarus/liblazarus.so)
 endif()
 target_include_directories(${EXECUTABLE_NAME} PRIVATE ${PROJECT_SOURCE_DIR}/lazarus/src/lazarus)
 

@@ -10,14 +10,22 @@ void RenderSystem::update(lz::ECSEngine &engine)
     int range_x = window.get_width() / 2;
     int range_y = window.get_height() / 2;
 
-    // Acts like a camera or view centered on the player
-    // TODO: Let player pan, zoom, etc the camera/view
+    // Set camera centered on the player
     lz::Entity *player = engine.entities_with_components<Player>().front();
     lz::Position2D center = *player->get<lz::Position2D>();
-    int left = center.x - range_x;
-    int right = center.x + range_x;
-    int top = center.y - range_y;
-    int bottom = center.y + range_y;
+    const lz::Tileset *tileset = window.get_tileset();
+    int tile_size = tileset->get_tile_size();
+    sf::View view(sf::FloatRect(0, 0,
+                                window.get_width() * tile_size,
+                                window.get_height() * tile_size));
+    view.setViewport(sf::FloatRect(0, 0, 1, 1));
+    view.setCenter(center.x * tile_size + tile_size / 2,
+                   center.y * tile_size + tile_size / 2);
+    window.setView(view);
+    int left = (view.getCenter().x - view.getSize().x / 2) / tile_size;
+    int right = left + view.getSize().x / tile_size;
+    int top = (view.getCenter().y - view.getSize().y / 2) / tile_size;
+    int bottom = top + view.getSize().y / tile_size;
 
     // Get current map
     Dungeon &dungeon = Dungeon::instance();
@@ -25,7 +33,6 @@ void RenderSystem::update(lz::ECSEngine &engine)
 
     // Render map
     sf::Color tile_color;
-    // TODO: Draw camera subview, not the entire window
     for (int y = top; y < bottom; ++y)
     {
         for (int x = left; x < right; ++x)
@@ -43,7 +50,8 @@ void RenderSystem::update(lz::ECSEngine &engine)
                         tile_color = sf::Color(20, 40, 190);
                 }
 
-                window.set_tile({x - left, y - top}, map_tile, tile_color);
+                // window.set_tile({x - left, y - top}, map_tile, tile_color);
+                window.set_tile({x, y}, map_tile, tile_color);
             }
         }
     }
@@ -51,11 +59,9 @@ void RenderSystem::update(lz::ECSEngine &engine)
     // Render visible entities
     engine.apply_to_each<lz::Position2D, Renderable>(
         [&](lz::Entity *entity, lz::Position2D *pos, Renderable *rend) {
-            // TODO: Use relative position
-            // For now, we are assuming position on screen = position on map
             if (dungeon.is_visible(pos->x, pos->y))
             {
-                lz::Position2D pos_view{pos->x - left, pos->y - top};
+                lz::Position2D pos_view{pos->x, pos->y};
                 window.set_tile(pos_view, rend->tile_id);
             }
         });

@@ -16,11 +16,11 @@
 void game_loop(lz::ECSEngine &engine)
 {
     lz::Window &window = MainWindow::get_window();
-    while (window.is_open())
+    while (window.isOpen())
     {
         // Process events
         lz::Event event;
-        while (window.poll_event(event))
+        while (window.pollEvent(event))
         {
             switch (event.type)
             {
@@ -77,7 +77,7 @@ int main(int argc, char const *argv[])
     // Load tileset and initialize the main window
     lz::Tileset tileset;
     tileset.load("../res/test_tileset_48x48.png");
-    MainWindow::get_window().init(tileset, 20, 20, "CYBORG - A Lazarus game");
+    MainWindow::get_window().init(tileset, 19, 19, "CYBORG - A Lazarus game");
 
     // Create and subscribe the systems as event listeners
     engine.add_system<VisibilitySystem, EntityMovedEvent>();
