@@ -7,6 +7,8 @@ struct Player
     {
     }
     int fov_range;
+    float camera_offset_x, camera_offset_y;
+    float camera_zoom = 1.;
 };
 
 // Entities that have a tile associated and will be rendered by the render system

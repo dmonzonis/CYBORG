@@ -84,11 +84,14 @@ int main(int argc, char const *argv[])
     engine.add_system<InputSystem, KeyPressedEvent>();
     engine.add_system<MovementSystem, MovementIntentEvent>();
     engine.add_system<AISystem, RefreshAI>();
+    engine.add_system<RenderSystem, ResetCameraEvent>();
     // Set render system to update every tick
     engine.add_updateable<RenderSystem>();
 
     // Emit a first event so that the FOV is computed on game start
     engine.emit<EntityMovedEvent>({});
+    // Reset camera
+    engine.emit<ResetCameraEvent>({&player});
 
     game_loop(engine);
 

@@ -23,3 +23,8 @@ struct RefreshAI
 {
     lz::Entity *player;
 };
+
+struct ResetCameraEvent
+{
+    lz::Entity *player;
+};

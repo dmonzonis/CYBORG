@@ -8,5 +8,5 @@
  */
 struct MovementSystem : public lz::EventListener<MovementIntentEvent>
 {
-    virtual void receive(lz::ECSEngine& engine, const MovementIntentEvent& event);
+    virtual void receive(lz::ECSEngine &engine, const MovementIntentEvent &event);
 };
