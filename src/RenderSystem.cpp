@@ -44,9 +44,9 @@ void RenderSystem::update(lz::ECSEngine &engine)
     view.zoom(player_component->camera_zoom);
     window.setView(view);
     int left = (view.getCenter().x - view.getSize().x / 2) / tile_size;
-    int right = left + view.getSize().x / tile_size;
+    int right = left + view.getSize().x / tile_size + tile_size;
     int top = (view.getCenter().y - view.getSize().y / 2) / tile_size;
-    int bottom = top + view.getSize().y / tile_size;
+    int bottom = top + view.getSize().y / tile_size + tile_size;
 
     // Get current map
     Dungeon &dungeon = Dungeon::instance();
