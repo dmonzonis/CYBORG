@@ -22,9 +22,8 @@ void AISystem::receive(lz::ECSEngine &engine, const RefreshAI &event)
             // Get current map
             lz::SquareGridMap &map = Dungeon::instance().get_level();
 
-            lz::AStarSearch<lz::Position2D, lz::SquareGridMap> astar_search(map,
-                                                                            pos,
-                                                                            player_pos);
+            lz::AStarSearch<lz::Position2D, lz::SquareGridMap> astar_search(
+                map, pos, player_pos);
             astar_search.execute();
             if (astar_search.get_state() != lz::SearchState::SUCCESS)
                 // No path to player, do nothing

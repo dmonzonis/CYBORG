@@ -1,9 +1,9 @@
 #include "MovementSystem.h"
+
 #include "Components.h"
 #include "Dungeon.h"
 
-void MovementSystem::receive(lz::ECSEngine &engine,
-                             const MovementIntentEvent &event)
+void MovementSystem::receive(lz::ECSEngine &engine, const MovementIntentEvent &event)
 {
     // Check if the entity can move to the new position
     auto entity = event.entity;

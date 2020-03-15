@@ -1,10 +1,10 @@
 #include "InputSystem.h"
 #include <lazarus/Graphics.h>
 #include <lazarus/SquareGridMap.h>
+
 #include "Components.h"
 
-void InputSystem::receive(lz::ECSEngine &engine,
-                          const InputEvent &event)
+void InputSystem::receive(lz::ECSEngine &engine, const InputEvent &event)
 {
     lz::Event inp_event = event.event;
     // Get player entity
@@ -12,7 +12,7 @@ void InputSystem::receive(lz::ECSEngine &engine,
     if (player_entities.size() != 1)
         throw std::runtime_error("There cannot be more than one player entity!");
     else if (player_entities.empty())
-        return; // No player, so don't process input
+        return;  // No player, so don't process input
 
     lz::Entity &player = *player_entities[0];
 
@@ -66,8 +66,7 @@ void InputSystem::handle_keyboard_event(lz::ECSEngine &engine,
     engine.emit(MovementIntentEvent{player, new_pos});
 }
 
-void InputSystem::handle_mousewheel_event(lz::Entity &player,
-                                          lz::Event &event)
+void InputSystem::handle_mousewheel_event(lz::Entity &player, lz::Event &event)
 {
     Player *player_component = player.get<Player>();
     if (!player_component)
@@ -80,8 +79,7 @@ void InputSystem::handle_mousewheel_event(lz::Entity &player,
         player_component->camera_zoom = 0.5;
 }
 
-void InputSystem::handle_mouse_click_event(lz::Entity &player,
-                                           lz::Event &event)
+void InputSystem::handle_mouse_click_event(lz::Entity &player, lz::Event &event)
 {
     Player *player_component = player.get<Player>();
     if (!player_component)
@@ -105,14 +103,13 @@ void InputSystem::handle_mouse_click_event(lz::Entity &player,
     }
 }
 
-void InputSystem::handle_mouse_movement_event(lz::Entity &player,
-                                              lz::Event &event)
+void InputSystem::handle_mouse_movement_event(lz::Entity &player, lz::Event &event)
 {
     Player *player_component = player.get<Player>();
     if (!player_component)
         return;
 
-    sf::Event::MouseMoveEvent &mouse= event.mouseMove;
+    sf::Event::MouseMoveEvent &mouse = event.mouseMove;
     if (panning)
     {
         // Pan the camera by the mouse movement amount

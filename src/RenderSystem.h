@@ -2,6 +2,7 @@
 
 #include <lazarus/ECS.h>
 #include <lazarus/Graphics.h>
+
 #include "Components.h"
 #include "Dungeon.h"
 #include "VisibilitySystem.h"

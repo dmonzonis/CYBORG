@@ -9,20 +9,20 @@ class Dungeon
 {
 public:
     // Delete other constructors/copy operators
-    Dungeon(const Dungeon&) = delete;
-    Dungeon &operator=(const Dungeon&) = delete;
-    Dungeon(Dungeon&&) = delete;
-    Dungeon &operator=(Dungeon&&) = delete;
+    Dungeon(const Dungeon &) = delete;
+    Dungeon &operator=(const Dungeon &) = delete;
+    Dungeon(Dungeon &&) = delete;
+    Dungeon &operator=(Dungeon &&) = delete;
 
     /**
      * Get the singleton's instance.
      */
-    static Dungeon& instance();
+    static Dungeon &instance();
 
     /**
      * Generates a new level with the given dimensions and
      * adds it to the level pool.
-     * 
+     *
      * @return The new level's position in the pool.
      */
     int generate_new_level(int width, int height);
@@ -30,12 +30,12 @@ public:
     /**
      * Gets the level at the given position in the pool.
      */
-    lz::SquareGridMap& get_level(int level);
+    lz::SquareGridMap &get_level(int level);
 
     /**
      * Gets the currently loaded level.
      */
-    lz::SquareGridMap& get_level();
+    lz::SquareGridMap &get_level();
 
     /**
      * Switches the currently loaded level.

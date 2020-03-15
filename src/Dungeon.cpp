@@ -5,7 +5,7 @@ Dungeon::Dungeon()
 {
 }
 
-Dungeon& Dungeon::instance()
+Dungeon &Dungeon::instance()
 {
     static Dungeon dungeon;
     return dungeon;
@@ -35,17 +35,17 @@ int Dungeon::generate_new_level(int width, int height)
     // Update visibility and discovered vectors for this map
     visible.emplace_back(map.get_width() * map.get_height(), false);
     discovered.emplace_back(map.get_width() * map.get_height(), false);
-    
+
     return levels.size() - 1;
 }
 
-lz::SquareGridMap& Dungeon::get_level(int level)
+lz::SquareGridMap &Dungeon::get_level(int level)
 {
     // TODO: throw error if there is no level at the asked position
     return levels[level];
 }
 
-lz::SquareGridMap& Dungeon::get_level()
+lz::SquareGridMap &Dungeon::get_level()
 {
     return get_level(current_level);
 }

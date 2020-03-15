@@ -4,7 +4,7 @@ MainWindow::MainWindow()
 {
 }
 
-lz::Window& MainWindow::get_window()
+lz::Window &MainWindow::get_window()
 {
     static lz::Window window;
     return window;

@@ -3,7 +3,8 @@
 // Component that identifies the player
 struct Player
 {
-    Player(int fov_range) : fov_range(fov_range)
+    Player(int fov_range)
+        : fov_range(fov_range)
     {
     }
     int fov_range;
@@ -14,7 +15,8 @@ struct Player
 // Entities that have a tile associated and will be rendered by the render system
 struct Renderable
 {
-    Renderable(int tile_id) : tile_id(tile_id)
+    Renderable(int tile_id)
+        : tile_id(tile_id)
     {
     }
     int tile_id;
@@ -29,7 +31,8 @@ enum class AIBehaviour
 // Entities that use an AI behaviour, i.e., are controlled by the machine
 struct AI
 {
-    AI(AIBehaviour behaviour) : behaviour(behaviour)
+    AI(AIBehaviour behaviour)
+        : behaviour(behaviour)
     {
     }
     AIBehaviour behaviour;

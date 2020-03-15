@@ -1,16 +1,15 @@
 #include "Game.h"
-
-#include "version.h"
-
 #include <lazarus/Graphics.h>
-#include "VisibilitySystem.h"
-#include "InputSystem.h"
-#include "RenderSystem.h"
-#include "MovementSystem.h"
+
 #include "AISystem.h"
 #include "Components.h"
 #include "Dungeon.h"
+#include "InputSystem.h"
 #include "MainWindow.h"
+#include "MovementSystem.h"
+#include "RenderSystem.h"
+#include "VisibilitySystem.h"
+#include "version.h"
 
 // TODO: Move abstract game loop logic to lazarus
 void game_loop(lz::ECSEngine &engine)
@@ -68,7 +67,7 @@ int main(int argc, char const *argv[])
     int level = dungeon.generate_new_level(MAP_WIDTH, MAP_HEIGHT);
     dungeon.switch_level(level);
     lz::SquareGridMap &map = dungeon.get_level();
-    
+
     // Player position is always floor
     map.set_walkable(MAP_WIDTH / 2, MAP_HEIGHT / 2, true);
     map.set_transparency(MAP_WIDTH / 2, MAP_HEIGHT / 2, true);

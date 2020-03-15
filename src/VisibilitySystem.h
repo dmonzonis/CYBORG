@@ -2,6 +2,7 @@
 
 #include <lazarus/ECS.h>
 #include <lazarus/FOV.h>
+
 #include "Components.h"
 #include "Dungeon.h"
 #include "Events.h"
@@ -11,5 +12,5 @@
  */
 struct VisibilitySystem : public lz::EventListener<EntityMovedEvent>
 {
-    virtual void receive(lz::ECSEngine& engine, const EntityMovedEvent& event);
+    virtual void receive(lz::ECSEngine &engine, const EntityMovedEvent &event);
 };

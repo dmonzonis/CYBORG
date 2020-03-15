@@ -1,7 +1,6 @@
 #include "VisibilitySystem.h"
 
-void VisibilitySystem::receive(lz::ECSEngine &engine,
-                               const EntityMovedEvent &event)
+void VisibilitySystem::receive(lz::ECSEngine &engine, const EntityMovedEvent &event)
 {
     // Get current map
     Dungeon &dungeon = Dungeon::instance();
@@ -15,7 +14,7 @@ void VisibilitySystem::receive(lz::ECSEngine &engine,
     if (player_entities.size() > 1)
         throw std::runtime_error("There cannot be more than one player entity!");
     else if (player_entities.empty())
-        return; // No player, so don't process input
+        return;  // No player, so don't process input
 
     // Get FOV range from player component
     int range = player_entities[0]->get<Player>()->fov_range;

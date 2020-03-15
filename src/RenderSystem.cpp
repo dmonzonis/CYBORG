@@ -1,8 +1,7 @@
 #include "RenderSystem.h"
 #include "MainWindow.h"
 
-void RenderSystem::receive(lz::ECSEngine &engine,
-                           const ResetCameraEvent &event)
+void RenderSystem::receive(lz::ECSEngine &engine, const ResetCameraEvent &event)
 {
     lz::Entity *player = event.player;
     Player *player_component = player->get<Player>();
@@ -34,9 +33,8 @@ void RenderSystem::update(lz::ECSEngine &engine)
     int tile_size = window.get_tileset()->get_tile_size();
     // Set view to occupy all space in the window
     // TODO: Rework this when subwindows/layers are implemented
-    sf::View view(sf::FloatRect(0, 0,
-                                window.get_width() * tile_size,
-                                window.get_height() * tile_size));
+    sf::View view(sf::FloatRect(
+        0, 0, window.get_width() * tile_size, window.get_height() * tile_size));
     view.setViewport(sf::FloatRect(0, 0, 1, 1));
     float center_x = center.x * tile_size + player_component->camera_offset_x;
     float center_y = center.y * tile_size + player_component->camera_offset_y;
